@@ -22,24 +22,35 @@ Static multi-page marketing site for Core-Novaness.
 ## Why this setup
 
 - Fast to load
-- Easy to host on Render
+- Easy to host on Cloudflare Pages
 - Low maintenance
 - Easy to expand later into a framework if needed
 
 ## Local preview
 
-Open `index.html` in a browser, or serve the folder with any static server.
+Serve the folder with any static server.
 
-## Deploying on Render
+Example:
+
+```bash
+npx serve .
+```
+
+## Deploying on Cloudflare Pages
 
 1. Push this folder to a Git repository.
-2. In Render, create a new Static Site.
-3. Point it to the repository.
-4. Set the publish directory to the project root.
-5. If Render asks for a build command, leave it empty if allowed for your setup.
-6. Connect the custom domain `corenovaness.com`.
+2. Create a new Cloudflare Pages project and connect the repository.
+3. Use `.` as the build output directory.
+4. Leave the build command empty for this static site.
+5. Deploy and attach the custom domain `corenovaness.com`.
+
+## Included Cloudflare config
+
+- Cloudflare Pages automatically serves matching HTML files on clean URLs like `/services`
+- Cloudflare Pages also redirects `.html` page requests to extensionless URLs
+- `_headers` adds basic security headers for the live site and prevents `pages.dev` copies from being indexed
 
 ## Notes
 
 - The contact form opens the user's default email app using `mailto:` so it works without a backend.
-- The testimonials page currently uses transparent draft testimonial placeholders and should be replaced with verified client feedback as the portfolio grows.
+- The testimonials page now uses transparent launch-stage proof messaging instead of placeholder quotes.

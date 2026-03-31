@@ -7,6 +7,13 @@ if (navToggle && siteNav) {
     navToggle.setAttribute("aria-expanded", String(isOpen));
   });
 
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      document.body.classList.remove("nav-open");
+      navToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
   siteNav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
       document.body.classList.remove("nav-open");
@@ -15,11 +22,28 @@ if (navToggle && siteNav) {
   });
 }
 
-const currentPath = window.location.pathname.split("/").pop() || "index.html";
+const getPathKey = (value) => {
+  if (!value) {
+    return "index";
+  }
+
+  const cleanValue = value.split("#")[0].split("?")[0];
+  const trimmed = cleanValue.replace(/\/+$/, "");
+
+  if (!trimmed || trimmed === "/") {
+    return "index";
+  }
+
+  const lastSegment = trimmed.split("/").pop() || "index";
+  return lastSegment.replace(/\.html$/, "") || "index";
+};
+
+const currentPath = getPathKey(window.location.pathname);
 document.querySelectorAll(".site-nav a").forEach((link) => {
   const href = link.getAttribute("href");
-  if (href === currentPath || (currentPath === "" && href === "index.html")) {
+  if (getPathKey(href) === currentPath) {
     link.classList.add("is-active");
+    link.setAttribute("aria-current", "page");
   }
 });
 
@@ -79,7 +103,7 @@ if (form && status) {
 
     const mailto = `mailto:support@corenovaness.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
 
-    status.textContent = "Opening your email app so you can send the inquiry.";
+    status.textContent = "Opening your email app with a draft inquiry.";
     status.className = "form-status status-success";
     window.location.href = mailto;
   });
